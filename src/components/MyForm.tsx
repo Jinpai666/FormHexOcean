@@ -74,7 +74,7 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
 };
 
 export default connect(
-    (state) => ({
+    (state: { form: { myForm: { values: FormData } } }) => ({
         initialValues: state.form.myForm && state.form.myForm.values
     })
 )(reduxForm<FormData, MyFormProps>({

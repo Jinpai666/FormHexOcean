@@ -36,7 +36,7 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
     };
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedType = (event.target as HTMLInputElement).value;
+        const selectedType = (event.target as HTMLSelectElement).value;
         dispatch(changeType(selectedType));
     };
 

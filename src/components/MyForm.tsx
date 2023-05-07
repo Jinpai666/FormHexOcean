@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import React , {ReactElement} from 'react';
+import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 import store from "../redux/store";
-import { connect, useDispatch } from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import changeType from "../redux/actions/setDishType/setDishAction";
 
 interface MyFormProps {
@@ -17,18 +17,18 @@ type FormData = {
 };
 
 const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement => {
-    const { handleSubmit } = props;
+    const {handleSubmit} = props;
     const dispatch = useDispatch();
 
     const onSubmit = (values: FormData) => {
         console.log('stare', values);
 
         const newValues = (values: FormData) => {
-            const { hours, minutes, seconds, ...rest } = values;
+            const {hours, minutes, seconds, ...rest} = values;
             const combinedTime = {
                 preparation_time: `${hours}:${minutes}:${seconds}`
             };
-            return { ...rest, ...combinedTime };
+            return {...rest, ...combinedTime};
         }
         console.log('nowe', newValues(values));
         console.log();
@@ -46,16 +46,16 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="name">Dish name</label>
-                    <Field name="name" component="input" type="text" />
+                    <Field name="name" component="input" type="text"/>
                 </div>
                 <div>
                     <p>prep time</p>
                     <label htmlFor="hours">h:</label>
-                    <Field name="hours" component="input" type="text" />
+                    <Field name="hours" component="input" type="text"/>
                     <label htmlFor="minutes">m:</label>
-                    <Field name="minutes" component="input" type="text" />
+                    <Field name="minutes" component="input" type="text"/>
                     <label htmlFor="seconds">s:</label>
-                    <Field name="seconds" component="input" type="text" />
+                    <Field name="seconds" component="input" type="text"/>
                 </div>
                 <div>
                     <label htmlFor="type">Dish type</label>

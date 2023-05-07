@@ -1,4 +1,5 @@
-import React , {ReactElement} from 'react';
+import * as React from 'react'
+import {ReactElement} from 'react';
 import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 import store from "../redux/store";
 import {connect, useDispatch} from 'react-redux';

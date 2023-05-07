@@ -1,11 +1,14 @@
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import MyForm from './components/MyForm';
 
-import './App.css'
-
-function App() {
-
+const App: React.FC = () => {
   return (
-   <div>form</div>
-  )
-}
+      <Provider store={store}>
+        <MyForm />
+      </Provider>
+  );
+};
 
-export default App
+export default App;

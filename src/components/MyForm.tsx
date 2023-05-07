@@ -2,7 +2,7 @@ import React, {ReactElement} from 'react';
 import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 import store from "../redux/store";
 import { connect, useDispatch } from 'react-redux';
-import  setDishType  from "../redux/actions/setDishTypeAction";
+import  changeType  from "../redux/actions/setDishType/setDishAction";
 
 
 interface MyFormProps {
@@ -36,12 +36,13 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
     };
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedType = event.target.value;
-        dispatch(setDishType(selectedType));
+        const selectedType = (event.target as HTMLInputElement).value;
+        dispatch(changeType(selectedType));
     };
 
     return (
         <>
+            <h1>{store.getState().type.selectedType}</h1>
             <button onClick={()=>console.log(store.getState())}>test</button>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>

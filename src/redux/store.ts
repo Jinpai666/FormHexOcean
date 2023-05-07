@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import dishReducer from './reducers/dishReducer';
+import typeReducer from './reducers/typeReducer';
 
 const rootReducer = combineReducers({
     form: formReducer,
-    dish: dishReducer,
+    type: typeReducer,
 });
 
 const store = createStore(rootReducer);

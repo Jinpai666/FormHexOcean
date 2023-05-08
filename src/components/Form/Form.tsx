@@ -39,17 +39,25 @@ const renderInput = ({ input, type, meta }: RenderInputProps): React.ReactElemen
     return <Input {...input} type={type} step={step} errorMessage={meta.touched && meta.error} />;
 };
 
+interface Dish {
+    name: string;
+    preparation_time: string;
+    type: string;
+    no_of_slices?: string;
+    diameter?: string;
+    spiciness_scale?: string;
+    slices_of_bread?: string;
+}
 
 
 const onSubmit = (values: FormData) => {
-    console.log('stare', values);
-    const {hours, minutes, seconds, ...rest} = values;
-    const newValues = {
+    const { hours, minutes, seconds, ...rest } = values;
+    const newValues: Dish = {
         ...rest,
-        preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`
+        preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`,
     };
     console.log('nowe', newValues);
-    submitDish(newValues)
+    submitDish(newValues);
 };
 
 const required = (value: string): string | undefined => {

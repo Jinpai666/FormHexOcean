@@ -4,8 +4,10 @@ interface Dish {
     name: string;
     preparation_time: string;
     type: string;
-    no_of_slices: number;
-    diameter: number;
+    no_of_slices?: string;
+    diameter?: string;
+    spiciness_scale?: string;
+    slices_of_bread?: string;
 }
 
 export  default async function submitDish(data: Dish): Promise<number> {

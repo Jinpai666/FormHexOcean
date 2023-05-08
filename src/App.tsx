@@ -2,6 +2,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Form from './components/MyForm';
 import store from "./redux/store"
+import './css reset/reset.scss'
+import './App.scss'
 
 
 

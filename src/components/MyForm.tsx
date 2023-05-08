@@ -1,8 +1,5 @@
-import { ReactElement, ChangeEvent } from 'react';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { handleTypeSelection } from "../redux/features/setDishType"
-import { TypeSelection } from "../types/TypeSelection"
+import {ReactElement, ChangeEvent, useState} from 'react';
+import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;
@@ -14,34 +11,26 @@ type FormData = {
     minutes: string;
     seconds: string;
     type: string;
-    no_of_slices: string;
+    no_of_slices?: string;
 };
 
-interface TypeState {
-    type: {
-        value: string;
-    };
-}
 
 const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
-    const { handleSubmit } = props;
-    const dispatch = useDispatch();
-    const selectedType = useSelector((state: TypeState) => state.type.value);
+    const {handleSubmit} = props;
+    const [selectedType, setSelectedType] = useState('')
 
     const onSubmit = (values: FormData) => {
         console.log('stare', values);
-
+        const {hours, minutes, seconds, ...rest} = values;
         const newValues = {
-            ...values,
+            ...rest,
             preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`
         };
         console.log('nowe', newValues);
     };
 
     const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const selectedType = event.target.value;
-        const payload: TypeSelection = { selectedType };
-        dispatch(handleTypeSelection(payload));
+        setSelectedType(event.target.value);
     };
 
     return (
@@ -72,7 +61,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                         type="text"
                     />
                     <label htmlFor="seconds">s:</label>
-                    <Field name="seconds" component="input" type="text" />
+                    <Field name="seconds" component="input" type="text"/>
                 </div>
                 <div>
                     <label htmlFor="type">Dish type</label>
@@ -90,19 +79,31 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                 {selectedType === 'pizza' &&
                     <div>
                         <label htmlFor="no_of_slices">Number of slices</label>
-                        <Field name="no_of_slices" component="input" type="text" />
+                        <Field name="no_of_slices" component="input" type="number"/>
+                        <label htmlFor="diameter ">Diameter</label>
+                        <Field name="diameter " component="input" type="float"/>
                     </div>
                 }
-                {selectedType === 'soup' &&
+
+                {selectedType === 'soup' && (
                     <div>
-                        <label htmlFor="spiciness_scale ">Spiciness scale from 1 to 10:</label>
-                        <Field name="spiciness_scale " component="input" type="text" />
+                        {Array.from({ length: 10 }, (_, index) => (
+                            <div key={index + 1}>
+                                <label htmlFor={`spiciness_scale${index + 1}`}>{index + 1}</label>
+                                <Field
+                                    name="spiciness_scale"
+                                    component="input"
+                                    type="radio"
+                                    value={(index + 1).toString()}
+                                />
+                            </div>
+                        ))}
                     </div>
-                }
+                )}
                 {selectedType === 'sandwich' &&
                     <div>
                         <label htmlFor="slices_of_bread  ">Slices of bread:</label>
-                        <Field name="slices_of_bread  " component="input" type="text" />
+                        <Field name="slices_of_bread  " component="input" type="number"/>
                     </div>
                 }
 
@@ -113,5 +114,5 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
 };
 
 export default reduxForm<FormData, FormProps>({
-    form: 'myForm'
+    form: 'foodForm'
 })(Form);

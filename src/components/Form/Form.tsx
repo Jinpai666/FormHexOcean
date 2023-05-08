@@ -1,7 +1,7 @@
 import { ReactElement, useState, ChangeEvent } from 'react';
-
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import Input from "../Input/Input"
+import "./form.scss"
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;
@@ -17,7 +17,9 @@ interface FormData {
 };
 
 interface RenderInputProps {
-    input: string;
+    input: {
+        name: string;
+    };
     type: string;
     meta: {
         touched: boolean;
@@ -27,8 +29,16 @@ interface RenderInputProps {
 }
 
 const renderInput = ({ input, type, meta }: RenderInputProps): React.ReactElement => {
-    return <Input {...input} type={type} errorMessage={meta.touched && meta.error} />;
+    let step = "1";
+
+    if (input.name === 'diameter') {
+        step = '0.1';
+    }
+
+    return <Input {...input} type={type} step={step} errorMessage={meta.touched && meta.error} />;
 };
+
+
 
 const onSubmit = (values: FormData) => {
     console.log('stare', values);
@@ -42,10 +52,30 @@ const onSubmit = (values: FormData) => {
 
 const required = (value: string): string | undefined => {
     if (!value || value === "") {
-        return 'This field is required';
+        return 'This field is required.';
     }
     return undefined;
 };
+const maxLength2 = (value: string): string | undefined => {
+    if (value.length > 2) {
+        return 'Maximum 2 digits.';
+    }
+    return undefined;
+};
+
+const maxValue60minutes = (value: string): string | undefined => {
+    if (value > "60") {
+        return 'Maximum 60 minutes.';
+    }
+    return undefined;
+};
+const maxValue60seconds = (value: string): string | undefined => {
+    if (value > "60") {
+        return 'Maximum 60 seconds.';
+    }
+    return undefined;
+};
+
 
 const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     const {handleSubmit, valid} = props;
@@ -56,7 +86,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     };
 
     return (
-        <>
+        <div className="form">
             <h1>{selectedType || 'brak'}</h1>
             <button onClick={() => console.log(props)}>test</button>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,22 +105,37 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                     <Field
                         name="hours"
                         component={renderInput}
-                        type="text"
-                        validate={required}
+                        type="number"
+                        validate={[
+                            required,
+                            maxLength2
+                        ]}
+
                     />
                     <label htmlFor="minutes">m:</label>
                     <Field
                         name="minutes"
                         component={renderInput}
-                        type="text"
-                        validate={required}
+                        type="number"
+                        validate={[
+                            required,
+                            maxLength2,
+                            maxValue60minutes
+                        ]}
+
+
                     />
                     <label htmlFor="seconds">s:</label>
                     <Field
                         name="seconds"
                         component={renderInput}
-                        type="text"
-                        validate={required}
+                        type="number"
+                        validate={[
+                            required,
+                            maxLength2,
+                            maxValue60seconds
+                        ]}
+
                     />
                 </div>
                 <div>
@@ -123,7 +168,6 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             component={renderInput}
                             type="number"
                             validate={required}
-                            step="0.1"
                         />
                     </div>
                 }
@@ -164,7 +208,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                 >Submit
                 </button>
             </form>
-        </>
+        </div>
     );
 };
 

@@ -85,6 +85,12 @@ const maxValue60seconds = (value: string): string | undefined => {
     }
     return undefined;
 };
+const min3characters = (value: string): string | undefined => {
+    if (value.length > 2) {
+        return 'Minimum 3 chracters.';
+    }
+    return undefined;
+};
 
 
 const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
@@ -118,7 +124,8 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                         type="number"
                         validate={[
                             required,
-                            maxLength2
+                            maxLength2,
+                            min3characters
                         ]}
 
                     />

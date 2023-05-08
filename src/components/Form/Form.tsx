@@ -2,6 +2,7 @@ import { ReactElement, useState, ChangeEvent } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import Input from "../Input/Input"
 import "./form.scss"
+import submitDish from "../../services/sendRecipe"
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;
@@ -48,6 +49,7 @@ const onSubmit = (values: FormData) => {
         preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`
     };
     console.log('nowe', newValues);
+    submitDish(newValues)
 };
 
 const required = (value: string): string | undefined => {

@@ -1,8 +1,7 @@
-import * as React from 'react'
-import {ReactElement} from 'react';
+import React, { ReactElement } from 'react';
 import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 import store from "../redux/store";
-import {connect, useDispatch} from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 import changeType from "../redux/actions/setDishType/setDishAction";
 
 interface MyFormProps {
@@ -21,18 +20,21 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
     const {handleSubmit} = props;
     const dispatch = useDispatch();
 
+    const selectedType = useSelector((state: any) => state.type.selectedType);
+
+
+
     const onSubmit = (values: FormData) => {
         console.log('stare', values);
 
         const newValues = (values: FormData) => {
             const {hours, minutes, seconds, ...rest} = values;
             const combinedTime = {
-                preparation_time: `${hours}:${minutes}:${seconds}`
+                preparation_time: `${hours || '00'}:${minutes|| '00'}:${seconds|| '00'}`
             };
             return {...rest, ...combinedTime};
         }
         console.log('nowe', newValues(values));
-        console.log();
     };
 
     const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,8 +44,8 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
 
     return (
         <>
-            <h1>{store.getState().type.selectedType}</h1>
-            <button onClick={() => console.log(store.getState())}>test</button>
+            <h1>{selectedType}</h1>
+            <button onClick={() => console.log(store.getState().type.selectedType)}>test</button>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="name">Dish name</label>
@@ -74,10 +76,6 @@ const MyForm = (props: InjectedFormProps<FormData, MyFormProps>): ReactElement =
     );
 };
 
-export default connect(
-    (state: { form: { myForm: { values: FormData } } }) => ({
-        initialValues: state.form.myForm && state.form.myForm.values
-    })
-)(reduxForm<FormData, MyFormProps>({
+export default reduxForm<FormData, MyFormProps>({
     form: 'myForm'
-})(MyForm) as any);
+})(MyForm);

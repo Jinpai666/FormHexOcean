@@ -87,10 +87,25 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                         <option value="sandwich">sandwich</option>
                     </Field>
                 </div>
-                <div>
-                    <label htmlFor="no_of_slices">Number of slices</label>
-                    <Field name="no_of_slices" component="input" type="text" />
-                </div>
+                {selectedType === 'pizza' &&
+                    <div>
+                        <label htmlFor="no_of_slices">Number of slices</label>
+                        <Field name="no_of_slices" component="input" type="text" />
+                    </div>
+                }
+                {selectedType === 'soup' &&
+                    <div>
+                        <label htmlFor="spiciness_scale ">Spiciness scale from 1 to 10:</label>
+                        <Field name="spiciness_scale " component="input" type="text" />
+                    </div>
+                }
+                {selectedType === 'sandwich' &&
+                    <div>
+                        <label htmlFor="slices_of_bread  ">Slices of bread:</label>
+                        <Field name="slices_of_bread  " component="input" type="text" />
+                    </div>
+                }
+
                 <button type="submit">Submit</button>
             </form>
         </>

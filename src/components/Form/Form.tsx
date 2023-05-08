@@ -1,6 +1,7 @@
-import { ReactElement, ChangeEvent, useState } from 'react';
+import { ReactElement, useState, ChangeEvent } from 'react';
+
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import Input from "./Input"
+import Input from "../Input/Input"
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;

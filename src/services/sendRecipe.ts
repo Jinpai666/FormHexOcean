@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse  } from 'axios';
+
 
 interface Dish {
     name: string;
@@ -9,10 +10,9 @@ interface Dish {
     spiciness_scale?: string;
     slices_of_bread?: string;
 }
-
-export  default async function submitDish(data: Dish): Promise<number> {
+export default async function submitDish(data: Dish): Promise<number> {
     try {
-        const response: AxiosResponse<{ id: number }> = await axios.post( // Specify the expected response type
+        const response: AxiosResponse = await axios.post(
             'https://umzzcc503l.execute-api.us-west-2.amazonaws.com/dishes/',
             data,
             { headers: { 'Content-Type': 'application/json' } }
@@ -20,22 +20,16 @@ export  default async function submitDish(data: Dish): Promise<number> {
 
         const dishId: number = response.data.id;
         return dishId;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.response) {
-                // Request was made and server responded with a status code
-                console.log('Validation errors:', error.response.data);
-            } else {
-                // Something else went wrong
-                console.log('Error:', error.message);
-            }
+    } catch (error: any ) {
+        if (error.response) {
+            // Request was made and server responded with a status code
+            console.log('Validation errors:', error.response.data);
         } else {
-            // Handle other types of errors
-            console.log('Error:', error);
+            // Something else went wrong
+            console.log('Error:', error.message);
         }
 
         throw error; // Rethrow the error to handle it further if needed
     }
 }
-
 

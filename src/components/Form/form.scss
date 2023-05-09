@@ -56,8 +56,14 @@
       text-align: center;
     }
   }
+  &__info{
+    margin-top: 10px;
+
+  }
   &__api-error{
     color: red;
-    margin-top: 10px;
+  }
+  &__message{
+    color: green;
   }
 }

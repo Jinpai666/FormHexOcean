@@ -1,9 +1,9 @@
-import { ReactElement, useState, ChangeEvent } from 'react';
-import { Field, reduxForm, InjectedFormProps  } from 'redux-form';
+import {ReactElement, useState, ChangeEvent} from 'react';
+import {Field, reduxForm, InjectedFormProps} from 'redux-form';
 import Input from "../Input/Input"
 import "./form.scss"
 import submitDish from "../../services/sendRecipe"
-import { Dish } from '../../types/dish'
+import {Dish} from '../../types/dish'
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;
@@ -32,7 +32,7 @@ interface RenderInputProps {
     };
 }
 
-const renderInput = ({ input, type, className, placeholder, meta }: RenderInputProps): React.ReactElement => {
+const renderInput = ({input, type, className, placeholder, meta}: RenderInputProps): React.ReactElement => {
     let step = "1";
 
     if (input.name === 'diameter') {
@@ -91,19 +91,21 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     const {handleSubmit, valid} = props;
     const [selectedType, setSelectedType] = useState('')
     const [apiError, setApiError] = useState('')
+    const [message, setMessage] = useState('')
 
     const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setSelectedType(event.target.value);
     };
     const onSubmit = async (values: FormData) => {
-        const { hours, minutes, seconds, ...rest } = values;
+        const {hours, minutes, seconds, ...rest} = values;
         const newValues: Dish = {
             ...rest,
             preparation_time: `${values.hours}:${values.minutes}:${values.seconds}`,
         };
         try {
-           await submitDish(newValues);
-            window.location.reload()
+            await submitDish(newValues);
+            props.reset()
+            setMessage('Form sent successfully')
         } catch (error) {
             setApiError('Form was not sent, please try again later');
         }
@@ -125,7 +127,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             required,
                             min3characters
                         ]
-                    }
+                        }
                         className="form__input"
 
                     />
@@ -218,7 +220,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                 {selectedType === 'soup' && (
                     <>
                         <h2 className="form__title_small">Spiciness level</h2>
-                        <div  className="form__radio" >
+                        <div className="form__radio">
 
                             {Array.from({length: 10}, (_, index) => (
                                 <div className="form__radio_button" key={index + 1}>
@@ -256,7 +258,11 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                     disabled={!valid}
                 >Submit
                 </button>
-                <h2 className="form__api-error">{apiError}</h2>
+                {message
+                    ? <h2 className="form__message form__info">{message}</h2>
+                    : <h2 className="form__api-error form__info">{apiError}</h2>
+                }
+
 
             </form>
         </div>

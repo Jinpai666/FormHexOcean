@@ -103,7 +103,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
 
     return (
         <div className="project">
-            {/*<h2>{apiError}</h2>*/}
+            <h2>{apiError}</h2>
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="name">Dish name</label>

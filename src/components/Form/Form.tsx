@@ -61,20 +61,20 @@ const maxLength2 = (value: string): string => {
     return '';
 };
 
-const maxValue59minutes = (value: string | number): string => {
-    if (value > 59) {
+const maxValue59minutes = (value: string): string => {
+    if (parseFloat(value) > 59) {
         return 'Max 59 minutes.';
     }
     return '';
 };
-const maxValue59seconds = (value: string | number): string => {
-    if (value > 59) {
+const maxValue59seconds =  (value: string): string => {
+    if (parseFloat(value) > 59) {
         return 'Max 59 seconds.';
     }
     return '';
 };
-const maxValue23hours = (value: string | number): string => {
-    if (value > 23) {
+const maxValue23hours = (value: string): string => {
+    if (parseFloat(value) > 23) {
         return 'Max 23 hours.';
     }
     return '';
@@ -256,6 +256,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                 <button
                     type="submit"
                     disabled={!valid}
+                    className="form__button"
                 >Submit
                 </button>
                 {message

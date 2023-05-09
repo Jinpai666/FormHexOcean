@@ -21,7 +21,7 @@ const Input: FC<InputProps | SelectInputProps> = ({ errorMessage, type, ...props
                 <option value="sandwich">sandwich</option>
             </select>
         )}
-        {errorMessage && <span className="input__error">{errorMessage}</span>}
+        {errorMessage && <p className="input__error">{errorMessage}</p>}
     </div>
 );
 

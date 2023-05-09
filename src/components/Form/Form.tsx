@@ -23,6 +23,7 @@ interface RenderInputProps {
         name: string;
     };
     type: string;
+    className: string;
     meta: {
         touched: boolean;
         error: string;
@@ -30,14 +31,19 @@ interface RenderInputProps {
     };
 }
 
-const renderInput = ({ input, type, meta }: RenderInputProps): React.ReactElement => {
+const renderInput = ({ input, type, className, meta }: RenderInputProps): React.ReactElement => {
     let step = "1";
 
     if (input.name === 'diameter') {
         step = '0.1';
     }
 
-    return <Input {...input} type={type} step={step} errorMessage={meta.touched && meta.error} />;
+    return <Input {...input}
+                  type={type}
+                  step={step}
+                  className={className}
+                  errorMessage={meta.touched && meta.error}
+    />;
 };
 
 const required = (value: string): string => {
@@ -96,10 +102,9 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     };
 
     return (
-        <div className="form">
-            <h1>{apiError}</h1>
-            <button onClick={() => console.log(props)}>test</button>
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="project">
+            {/*<h2>{apiError}</h2>*/}
+            <form className="form" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label htmlFor="name">Dish name</label>
                     <Field
@@ -124,7 +129,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             required,
                             maxLength2,
                         ]}
-
+                        className="form__input form__input_time"
                     />
                     <label htmlFor="minutes">m:</label>
                     <Field
@@ -136,8 +141,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             maxLength2,
                             maxValue60minutes
                         ]}
-
-
+                        className="form__input form__input_time"
                     />
                     <label htmlFor="seconds">s:</label>
                     <Field
@@ -149,7 +153,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             maxLength2,
                             maxValue60seconds
                         ]}
-
+                        className="form__input form__input_time"
                     />
                 </div>
                 <div>

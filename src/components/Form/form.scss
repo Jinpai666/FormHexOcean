@@ -1,4 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap');
+
+.project{
+  padding: 100px 20px 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  background-image: url("src/assets/background.png");
+  background-size: 400px;
+  height: 100vh;
+}
+
 .form{
   padding: 20px;
-  font-size: 16px;
+  border: 1px solid #000;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  height: 500px;
+  &__input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 5px;
+    &_time{
+      -moz-appearance: textfield;
+    }
+    &_time::-webkit-outer-spin-button,
+    &_time::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
 }

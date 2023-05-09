@@ -61,25 +61,25 @@ const maxLength2 = (value: string): string => {
     return '';
 };
 
-const maxValue59minutes = (value: string): string => {
-    if (value > "59") {
+const maxValue59minutes = (value: string | number): string => {
+    if (value > 59) {
         return 'Max 59 minutes.';
     }
     return '';
 };
-const maxValue59seconds = (value: string): string => {
-    if (value > "59") {
+const maxValue59seconds = (value: string | number): string => {
+    if (value > 59) {
         return 'Max 59 seconds.';
     }
     return '';
 };
-const maxValue23hours = (value: string): string => {
-    if (value > "23") {
+const maxValue23hours = (value: string | number): string => {
+    if (value > 23) {
         return 'Max 23 hours.';
     }
     return '';
 };
-const min3characters = (value: string): string => {
+const min3characters = (value: string ): string => {
     if (value.length < 3) {
         return 'Min 3 chracters.';
     }

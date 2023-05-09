@@ -1,5 +1,5 @@
 import { ReactElement, useState, ChangeEvent } from 'react';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps  } from 'redux-form';
 import Input from "../Input/Input"
 import "./form.scss"
 import submitDish from "../../services/sendRecipe"
@@ -24,6 +24,7 @@ interface RenderInputProps {
     };
     type: string;
     className: string;
+    placeholder: string;
     meta: {
         touched: boolean;
         error: string;
@@ -31,7 +32,7 @@ interface RenderInputProps {
     };
 }
 
-const renderInput = ({ input, type, className, meta }: RenderInputProps): React.ReactElement => {
+const renderInput = ({ input, type, className, placeholder, meta }: RenderInputProps): React.ReactElement => {
     let step = "1";
 
     if (input.name === 'diameter') {
@@ -43,37 +44,44 @@ const renderInput = ({ input, type, className, meta }: RenderInputProps): React.
                   step={step}
                   className={className}
                   errorMessage={meta.touched && meta.error}
+                  placeholder={placeholder}
     />;
 };
 
 const required = (value: string): string => {
     if (!value || value === "") {
-        return 'This field is required.';
+        return 'Field required.';
     }
     return '';
 };
 const maxLength2 = (value: string): string => {
     if (value.length > 2) {
-        return 'Maximum 2 digits.';
+        return 'Max 2 digits.';
     }
     return '';
 };
 
-const maxValue60minutes = (value: string): string => {
-    if (value > "60") {
-        return 'Maximum 60 minutes.';
+const maxValue59minutes = (value: string): string => {
+    if (value > "59") {
+        return 'Max 59 minutes.';
     }
     return '';
 };
-const maxValue60seconds = (value: string): string => {
-    if (value > "60") {
-        return 'Maximum 60 seconds.';
+const maxValue59seconds = (value: string): string => {
+    if (value > "59") {
+        return 'Max 59 seconds.';
+    }
+    return '';
+};
+const maxValue23hours = (value: string): string => {
+    if (value > "23") {
+        return 'Max 23 hours.';
     }
     return '';
 };
 const min3characters = (value: string): string => {
     if (value.length < 3) {
-        return 'Minimum 3 chracters.';
+        return 'Min 3 chracters.';
     }
     return '';
 };
@@ -91,7 +99,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
         const { hours, minutes, seconds, ...rest } = values;
         const newValues: Dish = {
             ...rest,
-            preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`,
+            preparation_time: `${values.hours}:${values.minutes}:${values.seconds}`,
         };
         try {
            await submitDish(newValues);
@@ -103,11 +111,13 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
 
     return (
         <div className="project">
-            <h2>{apiError}</h2>
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
+                <h1 className="form__title">Your Recipe</h1>
+
                 <div>
-                    <label htmlFor="name">Dish name</label>
+                    <label htmlFor="name"/>
                     <Field
+                        placeholder="Dish name"
                         name="name"
                         component={renderInput}
                         type="text"
@@ -116,54 +126,65 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             min3characters
                         ]
                     }
+                        className="form__input"
+
                     />
                 </div>
                 <div>
-                    <p>prep time</p>
-                    <label htmlFor="hours">h:</label>
-                    <Field
-                        name="hours"
-                        component={renderInput}
-                        type="number"
-                        validate={[
-                            required,
-                            maxLength2,
-                        ]}
-                        className="form__input form__input_time"
-                    />
-                    <label htmlFor="minutes">m:</label>
-                    <Field
-                        name="minutes"
-                        component={renderInput}
-                        type="number"
-                        validate={[
-                            required,
-                            maxLength2,
-                            maxValue60minutes
-                        ]}
-                        className="form__input form__input_time"
-                    />
-                    <label htmlFor="seconds">s:</label>
-                    <Field
-                        name="seconds"
-                        component={renderInput}
-                        type="number"
-                        validate={[
-                            required,
-                            maxLength2,
-                            maxValue60seconds
-                        ]}
-                        className="form__input form__input_time"
-                    />
+                    <h2 className="form__title_small">Preparation time:</h2>
+                    <div className="form__preparation-section">
+                        <label htmlFor="hours"/>
+                        <Field
+                            placeholder="hours"
+                            name="hours"
+                            component={renderInput}
+                            type="number"
+                            validate={[
+                                required,
+                                maxLength2,
+                                maxValue23hours
+                            ]}
+                            className="form__input form__input_number form__input_preparation"
+                        />
+                        <label htmlFor="minutes"/>
+                        <Field
+                            placeholder="minutes"
+                            name="minutes"
+                            component={renderInput}
+                            type="number"
+                            validate={[
+                                required,
+                                maxLength2,
+                                maxValue59minutes
+                            ]}
+                            className="form__input form__input_number form__input_preparation"
+                        />
+                        <label htmlFor="seconds"/>
+                        <Field
+                            placeholder="seconds"
+                            name="seconds"
+                            component={renderInput}
+                            type="number"
+                            validate={[
+                                required,
+                                maxLength2,
+                                maxValue59seconds
+                            ]}
+                            className="form__input form__input_number form__input_preparation"
+                        />
+                    </div>
+
                 </div>
                 <div>
-                    <label htmlFor="type">Dish type</label>
+                    <label htmlFor="type"/>
                     <Field
                         name="type"
                         type="select"
                         component={renderInput}
                         onChange={handleTypeChange}
                         validate={required}
+                        className="form__input"
+
                     >
                         <option value="">select type</option>
                         <option value="pizza">pizza</option>
@@ -179,6 +200,8 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             component={renderInput}
                             type="number"
                             validate={required}
+                            className="form__input  form__input_number "
+
                         />
                         <label htmlFor="diameter">Diameter</label>
                         <Field
@@ -186,15 +209,19 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             component={renderInput}
                             type="number"
                             validate={required}
+                            className="form__input"
+
                         />
                     </div>
                 }
 
                 {selectedType === 'soup' && (
-                    <div  >
-                        <h2>Spiciness level</h2>
+                    <>
+                        <h2 className="form__title_small">Spiciness level</h2>
+                        <div  className="form__radio" >
+
                             {Array.from({length: 10}, (_, index) => (
-                                <div key={index + 1}>
+                                <div className="form__radio_button" key={index + 1}>
                                     <label htmlFor={`spiciness_scale${index + 1}`}>{index + 1}</label>
                                     <Field
                                         name="spiciness_scale"
@@ -202,11 +229,14 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                                         type="radio"
                                         value={(index + 1).toString()}
                                         validate={required}
+                                        className="form__input"
                                     />
                                 </div>
                             ))}
 
-                    </div>
+                        </div>
+                    </>
+
                 )}
                 {selectedType === 'sandwich' &&
                     <div>
@@ -216,6 +246,7 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                             component={renderInput}
                             type="number"
                             validate={required}
+                            className="form__input form__input_number"
                         />
                     </div>
                 }
@@ -225,6 +256,8 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                     disabled={!valid}
                 >Submit
                 </button>
+                <h2 className="form__api-error">{apiError}</h2>
+
             </form>
         </div>
     );

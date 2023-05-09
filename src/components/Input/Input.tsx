@@ -1,4 +1,5 @@
 import { FC, InputHTMLAttributes, SelectHTMLAttributes } from 'react';
+import "./input.scss"
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     errorMessage?: string | boolean;
@@ -21,7 +22,7 @@ const Input: FC<InputProps | SelectInputProps> = ({ errorMessage, type, ...props
                 <option value="sandwich">sandwich</option>
             </select>
         )}
-        {errorMessage && <p className="input__error">{errorMessage}</p>}
+         <p className="input__error">{errorMessage}</p>
     </div>
 );
 

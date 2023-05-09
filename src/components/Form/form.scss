@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500&display=swap');
 
 .project{
   padding: 100px 20px 0;
@@ -13,27 +12,52 @@
 
 .form{
   padding: 20px;
-  border: 1px solid #000;
   width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  height: 500px;
+  border-radius: 15px;
+  height: fit-content;
+  &__title{
+    font-weight:500;
+    font-size: 24px;
+    margin-bottom: 20px;
+    &_small{
+      margin-bottom: 10px;
+    }
+  }
   &__input{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 5px;
-    &_time{
+    padding: 10px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #999;
+    &_number{
       -moz-appearance: textfield;
     }
-    &_time::-webkit-outer-spin-button,
-    &_time::-webkit-inner-spin-button {
+    &_number::-webkit-outer-spin-button,
+    &_number::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
+    &_preparation{
+      width: 60px
+    }
   }
-
+  &__preparation-section{
+    display: flex;
+    gap: 5px;
+  }
+  &__radio{
+    display: flex;
+    gap: 5px;
+    &_button{
+      text-align: center;
+    }
+  }
+  &__api-error{
+    color: red;
+    margin-top: 10px;
+  }
 }

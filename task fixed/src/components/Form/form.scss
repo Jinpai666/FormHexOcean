@@ -1,0 +1,85 @@
+
+.project{
+  padding: 100px 20px 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  background-image: url("https://i.ibb.co/VHyPmst/background.png");
+  background-size: 400px;
+  height: 100vh;
+}
+
+.form{
+  padding: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 15px;
+  height: fit-content;
+  &__title{
+    font-weight:500;
+    font-size: 24px;
+    margin-bottom: 20px;
+    &_small{
+      margin-bottom: 10px;
+    }
+  }
+  &__input{
+    padding: 10px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #999;
+    &_number{
+      -moz-appearance: textfield;
+    }
+    &_number::-webkit-outer-spin-button,
+    &_number::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    &_preparation{
+      width: 60px
+    }
+  }
+  &__preparation-section{
+    display: flex;
+    gap: 5px;
+  }
+  &__radio{
+    display: flex;
+    gap: 5px;
+    &_button{
+      text-align: center;
+    }
+  }
+  &__info{
+    margin-top: 10px;
+
+  }
+  &__api-error{
+    color: red;
+  }
+  &__message{
+    color: green;
+  }
+  &__button{
+    background-color: #7a592d;
+    color: #fff;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #000;
+    padding: 5px;
+    cursor: pointer;
+    width: 100px;
+    font-size: 20px;
+    font-weight: 500;
+    &:disabled{
+      background-color: #8d8d8d;
+      cursor: default;
+    }
+  }
+}

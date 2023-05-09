@@ -3,6 +3,7 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import Input from "../Input/Input"
 import "./form.scss"
 import submitDish from "../../services/sendRecipe"
+import { Dish } from '../../types/dish'
 
 interface FormProps {
     handleSubmit?: (values: FormData) => void;
@@ -39,71 +40,64 @@ const renderInput = ({ input, type, meta }: RenderInputProps): React.ReactElemen
     return <Input {...input} type={type} step={step} errorMessage={meta.touched && meta.error} />;
 };
 
-interface Dish {
-    name: string;
-    preparation_time: string;
-    type: string;
-    no_of_slices?: string;
-    diameter?: string;
-    spiciness_scale?: string;
-    slices_of_bread?: string;
-}
-
-
-const onSubmit = (values: FormData) => {
-    const { hours, minutes, seconds, ...rest } = values;
-    const newValues: Dish = {
-        ...rest,
-        preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`,
-    };
-    console.log('nowe', newValues);
-    submitDish(newValues);
-};
-
-const required = (value: string): string | undefined => {
+const required = (value: string): string => {
     if (!value || value === "") {
         return 'This field is required.';
     }
-    return undefined;
+    return '';
 };
-const maxLength2 = (value: string): string | undefined => {
+const maxLength2 = (value: string): string => {
     if (value.length > 2) {
         return 'Maximum 2 digits.';
     }
-    return undefined;
+    return '';
 };
 
-const maxValue60minutes = (value: string): string | undefined => {
+const maxValue60minutes = (value: string): string => {
     if (value > "60") {
         return 'Maximum 60 minutes.';
     }
-    return undefined;
+    return '';
 };
-const maxValue60seconds = (value: string): string | undefined => {
+const maxValue60seconds = (value: string): string => {
     if (value > "60") {
         return 'Maximum 60 seconds.';
     }
-    return undefined;
+    return '';
 };
-const min3characters = (value: string): string | undefined => {
-    if (value.length > 2) {
+const min3characters = (value: string): string => {
+    if (value.length < 3) {
         return 'Minimum 3 chracters.';
     }
-    return undefined;
+    return '';
 };
 
 
 const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     const {handleSubmit, valid} = props;
     const [selectedType, setSelectedType] = useState('')
+    const [apiError, setApiError] = useState('')
 
     const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setSelectedType(event.target.value);
     };
+    const onSubmit = async (values: FormData) => {
+        const { hours, minutes, seconds, ...rest } = values;
+        const newValues: Dish = {
+            ...rest,
+            preparation_time: `${values.hours || '00'}:${values.minutes || '00'}:${values.seconds || '00'}`,
+        };
+        try {
+           await submitDish(newValues);
+            window.location.reload()
+        } catch (error) {
+            setApiError('Form was not sent, please try again later');
+        }
+    };
 
     return (
         <div className="form">
-            <h1>{selectedType || 'brak'}</h1>
+            <h1>{apiError}</h1>
             <button onClick={() => console.log(props)}>test</button>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
@@ -112,7 +106,11 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                         name="name"
                         component={renderInput}
                         type="text"
-                        validate={required}
+                        validate={[
+                            required,
+                            min3characters
+                        ]
+                    }
                     />
                 </div>
                 <div>
@@ -125,7 +123,6 @@ const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
                         validate={[
                             required,
                             maxLength2,
-                            min3characters
                         ]}
 
                     />

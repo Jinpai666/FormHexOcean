@@ -86,7 +86,7 @@ const min3characters = (value: string ): string => {
     return '';
 };
 
-
+const test = 'test'
 const Form = (props: InjectedFormProps<FormData, FormProps>): ReactElement => {
     const {handleSubmit, valid} = props;
     const [selectedType, setSelectedType] = useState('')
